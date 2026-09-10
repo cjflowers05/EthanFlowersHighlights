@@ -960,8 +960,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs CHS Ethan#19",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=VXo8IxPylJw",
+              "youtube_embed": "https://www.youtube.com/embed/VXo8IxPylJw"
             }
           ],
           "full_game_files": [
@@ -1009,8 +1009,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs EHS (Ethan #19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=BY6GPSbonRw",
+              "youtube_embed": "https://www.youtube.com/embed/BY6GPSbonRw"
             }
           ],
           "full_game_files": [
@@ -1058,8 +1058,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs HSHS (Ethan #19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=sf_YI8mQCME",
+              "youtube_embed": "https://www.youtube.com/embed/sf_YI8mQCME"
             }
           ],
           "full_game_files": [],
@@ -1084,8 +1084,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs HCHS (Ethan#19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=qyyhOSsOor8",
+              "youtube_embed": "https://www.youtube.com/embed/qyyhOSsOor8"
             }
           ],
           "full_game_files": [],
@@ -1110,8 +1110,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs WSHS G1 (Ethan#19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=Nju8oLIF-yw",
+              "youtube_embed": "https://www.youtube.com/embed/Nju8oLIF-yw"
             }
           ],
           "full_game_files": [],
@@ -1136,8 +1136,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs GHHS (Ethan #19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=XhCS90zsOD0",
+              "youtube_embed": "https://www.youtube.com/embed/XhCS90zsOD0"
             }
           ],
           "full_game_files": [
@@ -1185,8 +1185,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs WSHS G2 (Ethan#19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=rP2afh1ZKtY",
+              "youtube_embed": "https://www.youtube.com/embed/rP2afh1ZKtY"
             }
           ],
           "full_game_files": [
@@ -1234,8 +1234,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs AHS (Ethan#19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=L9Gn33I8aZY",
+              "youtube_embed": "https://www.youtube.com/embed/L9Gn33I8aZY"
             }
           ],
           "full_game_files": [
@@ -1283,8 +1283,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "FVHS vs MCHS (Ethan#19)",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=sT4iBuxoVUk",
+              "youtube_embed": "https://www.youtube.com/embed/sT4iBuxoVUk"
             }
           ],
           "full_game_files": [
@@ -1332,8 +1332,8 @@ window.__STATIC_MANIFEST__ = {
               "half": null,
               "label": "Ethan#19 Aug26 Highlights",
               "jersey": 19,
-              "youtube_url": null,
-              "youtube_embed": null
+              "youtube_url": "https://www.youtube.com/watch?v=on8NGVguk9w",
+              "youtube_embed": "https://www.youtube.com/embed/on8NGVguk9w"
             }
           ],
           "full_game_files": [],
@@ -1504,7 +1504,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-10T12:39:00.517496"
+  "exported_at": "2026-09-10T13:49:20.737854"
 };
 </script>
 <script>
@@ -1646,7 +1646,7 @@ function renderGames() {
     const isActive = currentGame && currentGame._seasonIdx === currentSeason && currentGame._gameIdx === gi;
     const thumb = game.clips[0]?.thumbnail;
     const thumbHtml = thumb
-      ? `<img src="/${thumb}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         + `<div class="game-thumb-placeholder" style="display:none">${game.number || '?'}</div>`
       : `<div class="game-thumb-placeholder">${game.number || '?'}</div>`;
 
@@ -1676,7 +1676,7 @@ function renderGames() {
 
 function fileUrl(relPath) {
   // Encode each path segment so special chars like # don't get treated as URL fragments
-  return '/' + relPath.split('/').map(s => encodeURIComponent(s)).join('/');
+  return relPath.split('/').map(s => encodeURIComponent(s)).join('/');
 }
 
 function formatDate(dateStr) {
@@ -1829,6 +1829,7 @@ document.addEventListener('keydown', (e) => {
 function closePlayer() {
   document.getElementById('playerOverlay').classList.add('hidden');
   document.getElementById('videoEl').pause();
+  const ytf = document.getElementById('ytFrame'); if (ytf) ytf.src = '';
   currentClipIndex = -1;
   document.querySelectorAll('.clip-item').forEach(el => el.classList.remove('playing'));
 }
