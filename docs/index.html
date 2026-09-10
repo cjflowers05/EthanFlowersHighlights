@@ -1504,7 +1504,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-10T13:49:20.737854"
+  "exported_at": "2026-09-10T13:56:03.685734"
 };
 </script>
 <script>
@@ -1725,7 +1725,7 @@ function renderClipsList(game) {
       <div class="clip-item" onclick="playPlayerHighlight(${i})" style="border-left:3px solid var(--accent)">
         <div class="clip-thumb">
           ${ph.thumbnail
-            ? `<img src="/${ph.thumbnail}" alt="" loading="lazy">`
+            ? `<img src="${ph.thumbnail}" alt="" loading="lazy">`
             : `<div class="clip-thumb-placeholder" style="font-size:18px">▶</div>`}
         </div>
         <div class="clip-details">
@@ -1788,9 +1788,33 @@ function playPlayerHighlight(idx) {
   const overlay = document.getElementById('playerOverlay');
   const video = document.getElementById('videoEl');
   document.getElementById('playerTitle').textContent = ph.label;
-  video.src = fileUrl(ph.file);
-  video.load();
-  video.play();
+  // Static site: use YouTube embed if available
+  let iframe = document.getElementById('ytFrame');
+  let msg = document.getElementById('ytMsg');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'ytFrame';
+    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.style.cssText = 'width:100%;aspect-ratio:16/9;border:none;display:none;';
+    video.parentNode.insertBefore(iframe, video.nextSibling);
+  }
+  if (!msg) {
+    msg = document.createElement('div');
+    msg.id = 'ytMsg';
+    msg.style.cssText = 'color:#aaa;text-align:center;padding:60px 20px;font-size:1.1rem;display:none;';
+    video.parentNode.insertBefore(msg, video.nextSibling);
+  }
+  video.style.display = 'none'; video.src = '';
+  iframe.style.display = 'none'; iframe.src = '';
+  msg.style.display = 'none';
+  if (ph.youtube_embed) {
+    iframe.src = ph.youtube_embed + '?autoplay=1';
+    iframe.style.display = 'block';
+  } else {
+    msg.textContent = 'Video coming soon — not yet uploaded to YouTube.';
+    msg.style.display = 'block';
+  }
   overlay.classList.remove('hidden');
 }
 
