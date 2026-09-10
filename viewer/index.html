@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethan's Highlights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+<style>
+/* ── Tokens ────────────────────────────────────────────────── */
+:root {
+  --bg:         #0c0f16;
+  --bg-card:    #161c28;
+  --bg-raised:  #1e2638;
+  --bg-hover:   #252f45;
+  --accent:     #f0c040;
+  --accent-dim: #c49a20;
+  --accent-bg:  rgba(240,192,64,.10);
+  --txt:        #e8ecf4;
+  --txt-2:      #8896b2;
+  --txt-3:      #4a5670;
+  --border:     rgba(255,255,255,.07);
+  --border-accent: rgba(240,192,64,.35);
+  --success:    #34d399;
+  --danger:     #f87171;
+  --shadow:     0 4px 24px rgba(0,0,0,.55);
+  --r:          8px;
+  --r-lg:       14px;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg:         #f0f2f7;
+    --bg-card:    #ffffff;
+    --bg-raised:  #e8eaf2;
+    --bg-hover:   #dde1ee;
+    --accent:     #c49a20;
+    --accent-dim: #a07d10;
+    --accent-bg:  rgba(196,154,32,.10);
+    --txt:        #141820;
+    --txt-2:      #4a5670;
+    --txt-3:      #8896b2;
+    --border:     rgba(0,0,0,.08);
+    --border-accent: rgba(196,154,32,.4);
+    --shadow:     0 2px 16px rgba(0,0,0,.12);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:         #0c0f16;
+  --bg-card:    #161c28;
+  --bg-raised:  #1e2638;
+  --bg-hover:   #252f45;
+  --accent:     #f0c040;
+  --accent-dim: #c49a20;
+  --accent-bg:  rgba(240,192,64,.10);
+  --txt:        #e8ecf4;
+  --txt-2:      #8896b2;
+  --txt-3:      #4a5670;
+  --border:     rgba(255,255,255,.07);
+  --border-accent: rgba(240,192,64,.35);
+  --success:    #34d399;
+  --danger:     #f87171;
+  --shadow:     0 4px 24px rgba(0,0,0,.55);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font: inherit; }
+a { color: inherit; text-decoration: none; }
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 48px 40px 40px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(135deg, #0a0d14 0%, #111828 60%, #0e1420 100%);
+}
+.hero-grid-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.hero-number {
+  position: absolute;
+  right: -20px; top: -30px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(200px, 30vw, 380px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  color: rgba(240,192,64,.07);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.hero-first-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(22px, 4vw, 38px);
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+  line-height: 1;
+}
+.hero-last-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(72px, 13vw, 130px);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--txt);
+}
+.hero-teams {
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--border-accent);
+  border-radius: 100px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+.hero-stats {
+  margin-top: 28px;
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--txt);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+}
+
+/* ── Nav/Tabs ──────────────────────────────────────────────── */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 40px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 14px 20px 12px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+  margin-bottom: -1px;
+}
+.nav-tab:hover { color: var(--txt); }
+.nav-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* ── Main layout ───────────────────────────────────────────── */
+.main { display: flex; min-height: calc(100vh - 200px); }
+.games-panel {
+  flex: 1;
+  padding: 28px 40px 40px;
+  min-width: 0;
+}
+.clips-panel {
+  width: 420px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border);
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  transition: width .3s ease;
+}
+.clips-panel.hidden { display: none; }
+.hidden { display: none !important; }
+
+/* ── Section header ────────────────────────────────────────── */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 12px;
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--txt);
+}
+.section-count {
+  font-size: 12px;
+  color: var(--txt-2);
+  font-weight: 500;
+}
+
+/* ── Games grid ────────────────────────────────────────────── */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.game-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.game-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--border-accent);
+}
+.game-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--shadow);
+}
+
+.game-thumb {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+.game-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .3s;
+}
+.game-card:hover .game-thumb img { transform: scale(1.04); }
+.game-thumb-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--bg-raised) 0%, var(--bg-hover) 100%);
+  color: var(--txt-3);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+.game-num-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: var(--accent);
+  color: #0c0f16;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.clip-count-badge {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: rgba(0,0,0,.75);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.game-info {
+  padding: 12px 14px 14px;
+}
+.game-vs {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--txt);
+  line-height: 1.2;
+  margin-bottom: 4px;
+  text-wrap: balance;
+}
+.game-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--txt-2);
+  font-size: 12px;
+  font-weight: 400;
+}
+.game-meta-dot {
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: var(--txt-3);
+}
+
+/* No-clips state */
+.no-clips-card {
+  grid-column: 1/-1;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: var(--r);
+  color: var(--txt-2);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.empty-season {
+  padding: 60px 0;
+  text-align: center;
+  color: var(--txt-2);
+}
+.empty-season p { font-size: 14px; margin-top: 8px; }
+
+/* ── Clips panel ───────────────────────────────────────────── */
+.clips-header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.clips-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.clips-game-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--txt);
+  text-wrap: balance;
+}
+.clips-close {
+  background: none;
+  border: none;
+  color: var(--txt-2);
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color .15s, background .15s;
+}
+.clips-close:hover { color: var(--txt); background: var(--bg-raised); }
+.clips-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--r);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.btn-accent {
+  background: var(--accent);
+  color: #0c0f16;
+  border-color: var(--accent);
+}
+.btn-accent:hover { background: #f8d060; }
+.btn-outline {
+  background: transparent;
+  color: var(--txt-2);
+  border-color: var(--border);
+}
+.btn-outline:hover { color: var(--txt); border-color: var(--txt-2); }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+
+.clips-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-raised) transparent;
+}
+
+.clip-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px;
+  border-radius: var(--r);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+  background: var(--bg-raised);
+}
+.clip-item:hover { border-color: var(--border-accent); }
+.clip-item.playing {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+.clip-item.deselected { opacity: 0.4; }
+
+.clip-thumb {
+  width: 88px;
+  flex-shrink: 0;
+  aspect-ratio: 16/9;
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--bg-hover);
+}
+.clip-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.clip-thumb-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--txt-3); font-size: 20px;
+}
+.clip-details { flex: 1; min-width: 0; }
+.clip-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--txt);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clip-meta {
+  font-size: 11px;
+  color: var(--txt-2);
+  display: flex;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.clip-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.toggle-btn {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: none;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .12s;
+  font-size: 10px;
+  color: transparent;
+}
+.toggle-btn.selected {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+.toggle-btn:hover { border-color: var(--accent); }
+
+/* ── Video Player ──────────────────────────────────────────── */
+.player-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.92);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.player-overlay.hidden { display: none; }
+.player-header {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.player-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #fff;
+}
+.player-close {
+  background: rgba(255,255,255,.1);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background .15s;
+}
+.player-close:hover { background: rgba(255,255,255,.2); }
+video {
+  width: 100%;
+  max-width: 960px;
+  border-radius: var(--r);
+  background: #000;
+  max-height: 70vh;
+}
+.player-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* ── Clips panel sub-tabs ──────────────────────────────────── */
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin: -14px -20px 14px;
+  padding: 0 20px;
+}
+.panel-tab {
+  padding: 10px 14px 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color .12s, border-color .12s;
+}
+.panel-tab:hover { color: var(--txt); }
+.panel-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Full-game marker panel ────────────────────────────────── */
+.marker-panel { display: flex; flex-direction: column; gap: 12px; padding: 4px 0; }
+.marker-video-wrap {
+  position: relative;
+  background: #000;
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.marker-video-wrap video {
+  width: 100%;
+  max-height: 200px;
+  display: block;
+  border-radius: 0;
+}
+.marker-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.marker-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt);
+  letter-spacing: .04em;
+  min-width: 80px;
+}
+.btn-in  { background: #1e3a2a; border-color: var(--success); color: var(--success); }
+.btn-out { background: #3a1e1e; border-color: var(--danger);  color: var(--danger);  }
+.btn-in:hover  { background: #2a4f38; }
+.btn-out:hover { background: #4f2a2a; }
+.btn-mark { background: var(--accent-bg); border-color: var(--border-accent); color: var(--accent); }
+.btn-mark:hover { background: rgba(240,192,64,.18); }
+
+.in-out-display {
+  display: flex;
+  gap: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt-2);
+}
+.in-out-display span { color: var(--txt); font-weight: 600; }
+
+/* Timeline */
+.timeline-wrap {
+  position: relative;
+  height: 28px;
+  background: var(--bg-hover);
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.timeline-progress {
+  position: absolute; top: 0; left: 0; height: 100%;
+  background: rgba(240,192,64,.15);
+  pointer-events: none;
+}
+.timeline-cursor {
+  position: absolute; top: 0; width: 2px; height: 100%;
+  background: var(--accent);
+  pointer-events: none;
+}
+.timeline-mark {
+  position: absolute; top: 4px; height: calc(100% - 8px);
+  background: rgba(52,211,153,.35);
+  border: 1px solid var(--success);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* Marks list */
+.marks-list { display: flex; flex-direction: column; gap: 6px; }
+.mark-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px;
+  background: var(--bg-hover);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+}
+.mark-item:hover { border-color: var(--border-accent); }
+.mark-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 24px;
+}
+.mark-times {
+  flex: 1;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--txt);
+}
+.mark-duration { font-size: 11px; color: var(--txt-2); margin-top: 1px; }
+.mark-del {
+  background: none; border: none; color: var(--txt-3);
+  font-size: 16px; padding: 2px 4px; border-radius: 4px;
+  transition: color .12s, background .12s;
+}
+.mark-del:hover { color: var(--danger); background: rgba(248,113,113,.1); }
+
+.marks-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--txt-2);
+  font-size: 13px;
+  border: 1px dashed var(--border);
+  border-radius: var(--r);
+}
+.kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--txt-2);
+}
+
+/* ── Reel builder toast ────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  font-size: 13px;
+  color: var(--txt);
+  box-shadow: var(--shadow);
+  z-index: 200;
+  max-width: 320px;
+  transition: opacity .3s, transform .3s;
+}
+.toast.hidden { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.toast-title { font-weight: 600; margin-bottom: 2px; }
+.toast-sub { color: var(--txt-2); font-size: 12px; }
+
+/* ── Loading state ─────────────────────────────────────────── */
+.loading {
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--txt-2);
+}
+.loading-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Error state ───────────────────────────────────────────── */
+.error-state {
+  padding: 60px 40px;
+  text-align: center;
+}
+.error-state h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--txt);
+  margin-bottom: 8px;
+}
+.error-state p { color: var(--txt-2); font-size: 14px; max-width: 420px; margin: 0 auto 20px; }
+.code-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--accent);
+  display: inline-block;
+  margin-top: 8px;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { padding: 32px 20px 28px; }
+  .nav { padding: 0 20px; }
+  .games-panel { padding: 20px; }
+  .main { flex-direction: column; }
+  .clips-panel {
+    width: 100% !important;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    max-height: 60vh;
+  }
+  .hero-stats { gap: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-number" id="jerseyNumber">19</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Player Highlights Archive</div>
+    <div class="hero-first-name" id="playerFirstName">ETHAN</div>
+    <h1 class="hero-last-name" id="playerLastName">FLOWERS</h1>
+    <div class="hero-teams" id="heroTeams"></div>
+    <div class="hero-stats" id="heroStats">
+      <div class="stat"><span class="stat-num">—</span><span class="stat-label">Seasons</span></div>
+      <div class="stat"><span class="stat-num">—</span><span class="stat-label">Games</span></div>
+      <div class="stat"><span class="stat-num">—</span><span class="stat-label">Clips</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- Season tabs -->
+<nav class="nav" id="seasonNav"></nav>
+
+<!-- Main -->
+<div class="main">
+  <div class="games-panel" id="gamesPanel">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading highlights…</p>
+    </div>
+  </div>
+  <aside class="clips-panel hidden" id="clipsPanel">
+    <div class="clips-header">
+      <div class="clips-header-top">
+        <div class="clips-game-title" id="clipsTitle">Select a game</div>
+        <button class="clips-close" id="clipsClose" aria-label="Close">✕</button>
+      </div>
+      <div class="panel-tabs">
+        <button class="panel-tab active" id="tabClips" onclick="switchPanelTab('clips')">Game Highlights of Ethan</button>
+        <button class="panel-tab" id="tabFullGame" onclick="switchPanelTab('fullgame')">Full Game</button>
+      </div>
+      <div class="clips-actions" id="clipsActions">
+        <button class="btn btn-accent btn-sm" id="buildReelBtn">⬡ Build Reel</button>
+        <button class="btn btn-outline btn-sm" id="selectAllBtn">Select All</button>
+        <button class="btn btn-outline btn-sm" id="deselectAllBtn">Deselect All</button>
+      </div>
+    </div>
+    <div class="clips-list" id="clipsList"></div>
+    <div class="clips-list hidden" id="fullGamePanel">
+      <!-- populated by renderFullGamePanel() -->
+    </div>
+  </aside>
+</div>
+
+<!-- Video player overlay -->
+<div class="player-overlay hidden" id="playerOverlay">
+  <div class="player-header">
+    <div class="player-title" id="playerTitle"></div>
+    <button class="player-close" id="playerClose" aria-label="Close player">✕</button>
+  </div>
+  <video id="videoEl" controls playsinline preload="metadata"></video>
+  <div class="player-nav">
+    <button class="btn btn-outline" id="prevClip">← Prev</button>
+    <button class="btn btn-outline" id="nextClip">Next →</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast">
+  <div class="toast-title" id="toastTitle"></div>
+  <div class="toast-sub" id="toastSub"></div>
+</div>
+
+<script>
+const API = '';  // relative to server origin
+let manifest = null;
+let currentSeason = 0;
+let currentGame = null;
+let currentClipIndex = -1;
+
+// ── Fetch manifest ──────────────────────────────────────────
+async function loadManifest() {
+  try {
+    const res = await fetch(`${API}/api/manifest`);
+    if (!res.ok) throw new Error(await res.text());
+    manifest = await res.json();
+    render();
+  } catch (err) {
+    document.getElementById('gamesPanel').innerHTML = `
+      <div class="error-state">
+        <h2>Server not running</h2>
+        <p>Start the local highlights server to view clips. Open a terminal in the project folder and run:</p>
+        <div class="code-block">python tools/serve.py</div>
+        <br>
+        <p style="font-size:12px; margin-top:8px;">If you haven't scanned your clips yet, run:<br>
+        <code style="color:var(--accent)">python tools/scan.py</code> first.</p>
+      </div>`;
+  }
+}
+
+function tabLabel(s) {
+  // Short label for the nav tab
+  const teamShort = s.team
+    .replace('Fuquay Varina Bengals', 'FV Bengals')
+    .replace('Carolina Velocity FC', 'Velocity FC')
+    .replace('NCFC ECNL', 'NCFC ECNL');
+  return `${s.year} ${teamShort}`;
+}
+
+function teamBadgeHTML(s) {
+  const parts = [];
+  parts.push(s.team);
+  if (s.jersey) parts.push(`#${s.jersey}`);
+  if (s.position) parts.push(s.position);
+  if (s.league && s.league !== 'High School') parts.push(s.league);
+  return parts.join(' · ');
+}
+
+// ── Render everything ───────────────────────────────────────
+function render() {
+  if (!manifest) return;
+
+  // Player name — split into first / last
+  const player = manifest.player || {};
+  const fullName = (player.name || 'Ethan Flowers').trim();
+  const nameParts = fullName.split(' ');
+  const firstName = nameParts.slice(0, -1).join(' ') || fullName;
+  const lastName = nameParts.length > 1 ? nameParts[nameParts.length - 1] : '';
+  document.getElementById('playerFirstName').textContent = firstName.toUpperCase();
+  document.getElementById('playerLastName').textContent = lastName.toUpperCase();
+
+  // Jersey number from active season (or first tab)
+  const seasons = manifest.seasons || [];
+  const activeSeason = seasons[currentSeason] || seasons[0] || {};
+  document.getElementById('jerseyNumber').textContent = activeSeason.jersey ? `#${activeSeason.jersey}` : '#19';
+
+  // Stats across all seasons
+  const allGames = seasons.flatMap(s => s.games || []);
+  const allClips = allGames.flatMap(g => g.clips || []);
+  const seasonsWithFootage = seasons.filter(s => s.games && s.games.length > 0);
+  document.getElementById('heroStats').innerHTML = `
+    <div class="stat">
+      <span class="stat-num">${seasonsWithFootage.length}</span>
+      <span class="stat-label">Season${seasonsWithFootage.length !== 1 ? 's' : ''}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">${allGames.length}</span>
+      <span class="stat-label">Game${allGames.length !== 1 ? 's' : ''}</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">${allClips.length}</span>
+      <span class="stat-label">Clip${allClips.length !== 1 ? 's' : ''}</span>
+    </div>`;
+
+  // Team badges — one per unique team from tabs, with position
+  const seen = new Set();
+  const badges = seasons.filter(s => {
+    const key = `${s.team}|${s.position}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  document.getElementById('heroTeams').innerHTML = badges.map(s =>
+    `<span class="team-badge">⚽ ${teamBadgeHTML(s)}</span>`
+  ).join('');
+
+  // Season tabs
+  const nav = document.getElementById('seasonNav');
+  nav.innerHTML = seasons.map((s, i) => `
+    <button class="nav-tab ${i === currentSeason ? 'active' : ''}"
+            onclick="switchSeason(${i})">${tabLabel(s)}</button>`).join('');
+
+  renderGames();
+}
+
+function switchSeason(idx) {
+  currentSeason = idx;
+  currentGame = null;
+  document.getElementById('clipsPanel').classList.add('hidden');
+  document.querySelectorAll('.nav-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  // Update jersey number for this team
+  const s = (manifest.seasons || [])[idx] || {};
+  document.getElementById('jerseyNumber').textContent = s.jersey ? `#${s.jersey}` : '#19';
+  renderGames();
+}
+
+function renderGames() {
+  const season = manifest.seasons[currentSeason];
+  if (!season) return;
+  const panel = document.getElementById('gamesPanel');
+
+  if (!season.games.length) {
+    const folderPath = `${season.team}\\${season.season_folder || season.year + ' Season'}`;
+    panel.innerHTML = `<div class="empty-season">
+      <div style="font-size:48px; margin-bottom:12px;">⚽</div>
+      <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;text-transform:uppercase;margin-bottom:4px;">No Footage Yet</h3>
+      <p>Drop Trace clips into <code style="color:var(--accent)">${folderPath}</code><br>then run <code style="color:var(--accent)">python tools/scan.py</code>.</p>
+    </div>`;
+    return;
+  }
+
+  const header = `
+    <div class="section-header">
+      <div class="section-title">${season.name}</div>
+      <div class="section-count">${season.games.length} game${season.games.length !== 1 ? 's' : ''}</div>
+    </div>`;
+
+  const cards = season.games.map((game, gi) => {
+    const isActive = currentGame && currentGame._seasonIdx === currentSeason && currentGame._gameIdx === gi;
+    const thumb = game.clips[0]?.thumbnail;
+    const thumbHtml = thumb
+      ? `<img src="/${thumb}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        + `<div class="game-thumb-placeholder" style="display:none">${game.number || '?'}</div>`
+      : `<div class="game-thumb-placeholder">${game.number || '?'}</div>`;
+
+    const clipCount = game.clips.length;
+    const dateStr = game.date ? formatDate(game.date) : '';
+
+    return `
+      <div class="game-card ${isActive ? 'active' : ''}" onclick="selectGame(${currentSeason}, ${gi})">
+        <div class="game-thumb">
+          ${thumbHtml}
+          ${game.number ? `<span class="game-num-badge">Game ${game.number}</span>` : ''}
+          ${clipCount > 0 ? `<span class="clip-count-badge">${clipCount} clip${clipCount !== 1 ? 's' : ''}</span>` : ''}
+        </div>
+        <div class="game-info">
+          <div class="game-vs">vs ${game.away_team || 'Opponent'}</div>
+          <div class="game-meta">
+            ${dateStr ? `<span>${dateStr}</span>` : ''}
+            ${dateStr && game.home_team ? `<span class="game-meta-dot"></span>` : ''}
+            ${game.home_team ? `<span>${game.home_team}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  panel.innerHTML = header + `<div class="games-grid">${cards}</div>`;
+}
+
+function fileUrl(relPath) {
+  // Encode each path segment so special chars like # don't get treated as URL fragments
+  return '/' + relPath.split('/').map(s => encodeURIComponent(s)).join('/');
+}
+
+function formatDate(dateStr) {
+  try {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  } catch { return dateStr; }
+}
+
+// ── Game / Clip panel ───────────────────────────────────────
+function selectGame(seasonIdx, gameIdx) {
+  const season = manifest.seasons[seasonIdx];
+  const game = season.games[gameIdx];
+  game._seasonIdx = seasonIdx;
+  game._gameIdx = gameIdx;
+  currentGame = game;
+
+  // Update card active state
+  document.querySelectorAll('.game-card').forEach((c, i) => c.classList.toggle('active', i === gameIdx));
+
+  // Populate clips panel
+  const panel = document.getElementById('clipsPanel');
+  panel.classList.remove('hidden');
+  document.getElementById('clipsTitle').textContent = `vs ${game.away_team || 'Opponent'}`;
+  renderClipsList(game);
+}
+
+function renderClipsList(game) {
+  const list = document.getElementById('clipsList');
+  const playerHighlights = game.player_highlights || [];
+  const clips = game.clips || [];
+
+  if (!clips.length && !playerHighlights.length) {
+    list.innerHTML = `
+      <div class="no-clips-card">
+        <span>📂</span>
+        <span>No clips yet. Download player moments from Trace and run <code>python tools/scan.py</code>.</span>
+      </div>`;
+    return;
+  }
+
+  // Player highlight videos from Trace (e.g. "FVHS vs CHS Ethan#19.mp4")
+  const phHTML = playerHighlights.map((ph, i) => {
+    const dur = ph.duration ? formatDuration(ph.duration) : '';
+    return `
+      <div class="clip-item" onclick="playPlayerHighlight(${i})" style="border-left:3px solid var(--accent)">
+        <div class="clip-thumb">
+          ${ph.thumbnail
+            ? `<img src="/${ph.thumbnail}" alt="" loading="lazy">`
+            : `<div class="clip-thumb-placeholder" style="font-size:18px">▶</div>`}
+        </div>
+        <div class="clip-details">
+          <div class="clip-name" style="color:var(--accent)">${ph.label}</div>
+          <div class="clip-meta">
+            ${dur ? `<span>${dur}</span>` : ''}
+            ${ph.size_mb ? `<span>${ph.size_mb} MB</span>` : ''}
+            <span>Trace Player Cut</span>
+          </div>
+        </div>
+        <div class="clip-controls"><span style="color:var(--accent);font-size:18px">▶</span></div>
+      </div>`;
+  }).join('');
+
+  if (!clips.length) {
+    list.innerHTML = phHTML;
+    return;
+  }
+
+  list.innerHTML = phHTML + clips.map((clip, i) => {
+    const isPlaying = i === currentClipIndex && currentGame === game;
+    const isSelected = clip.selected !== false;
+    const dur = clip.duration ? formatDuration(clip.duration) : '';
+    return `
+      <div class="clip-item ${isPlaying ? 'playing' : ''} ${isSelected ? '' : 'deselected'}"
+           data-idx="${i}" onclick="playClip(${i})">
+        <div class="clip-thumb">
+          ${clip.thumbnail
+            ? `<img src="/${clip.thumbnail}" alt="" loading="lazy">`
+            : `<div class="clip-thumb-placeholder">▶</div>`}
+        </div>
+        <div class="clip-details">
+          <div class="clip-name">Clip ${i + 1}</div>
+          <div class="clip-meta">
+            ${dur ? `<span>${dur}</span>` : ''}
+            ${clip.size_mb ? `<span>${clip.size_mb} MB</span>` : ''}
+            ${clip.team_side ? `<span>#${clip.jersey} ${clip.team_side}</span>` : ''}
+          </div>
+        </div>
+        <div class="clip-controls">
+          <button class="toggle-btn ${isSelected ? 'selected' : ''}"
+                  onclick="event.stopPropagation(); toggleClip('${clip.moment_id}')"
+                  title="${isSelected ? 'Deselect from reel' : 'Select for reel'}">✓</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function formatDuration(secs) {
+  const m = Math.floor(secs / 60);
+  const s = Math.round(secs % 60);
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// ── Video player ────────────────────────────────────────────
+function playPlayerHighlight(idx) {
+  if (!currentGame) return;
+  const ph = (currentGame.player_highlights || [])[idx];
+  if (!ph) return;
+  const overlay = document.getElementById('playerOverlay');
+  const video = document.getElementById('videoEl');
+  document.getElementById('playerTitle').textContent = ph.label;
+  video.src = fileUrl(ph.file);
+  video.load();
+  video.play();
+  overlay.classList.remove('hidden');
+}
+
+function playClip(idx) {
+  if (!currentGame) return;
+  const clip = currentGame.clips[idx];
+  if (!clip) return;
+
+  currentClipIndex = idx;
+  const overlay = document.getElementById('playerOverlay');
+  const video = document.getElementById('videoEl');
+  const title = document.getElementById('playerTitle');
+
+  title.textContent = `Clip ${idx + 1} — vs ${currentGame.away_team || 'Opponent'}`;
+  video.src = fileUrl(clip.file);
+  video.load();
+  video.play();
+  overlay.classList.remove('hidden');
+
+  // Update playing state in list
+  document.querySelectorAll('.clip-item').forEach((el, i) => {
+    el.classList.toggle('playing', i === idx);
+  });
+}
+
+document.getElementById('playerClose').addEventListener('click', closePlayer);
+document.getElementById('playerOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closePlayer();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePlayer();
+  if (e.key === 'ArrowRight') nextClip();
+  if (e.key === 'ArrowLeft') prevClip();
+});
+
+function closePlayer() {
+  document.getElementById('playerOverlay').classList.add('hidden');
+  document.getElementById('videoEl').pause();
+  currentClipIndex = -1;
+  document.querySelectorAll('.clip-item').forEach(el => el.classList.remove('playing'));
+}
+
+document.getElementById('nextClip').addEventListener('click', nextClip);
+document.getElementById('prevClip').addEventListener('click', prevClip);
+
+function nextClip() {
+  if (!currentGame || currentClipIndex < 0) return;
+  const next = currentClipIndex + 1;
+  if (next < currentGame.clips.length) playClip(next);
+}
+function prevClip() {
+  if (!currentGame || currentClipIndex < 0) return;
+  const prev = currentClipIndex - 1;
+  if (prev >= 0) playClip(prev);
+}
+
+// ── Clip selection ──────────────────────────────────────────
+async function toggleClip(momentId) {
+  if (!currentGame) return;
+  const clip = currentGame.clips.find(c => c.moment_id === momentId);
+  if (!clip) return;
+
+  const newSelected = !(clip.selected !== false);
+  clip.selected = newSelected;
+
+  try {
+    await fetch(`${API}/api/update-selection`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ moment_id: momentId, selected: newSelected })
+    });
+  } catch (err) {
+    console.warn('Could not save selection:', err);
+  }
+
+  renderClipsList(currentGame);
+}
+
+document.getElementById('selectAllBtn').addEventListener('click', async () => {
+  if (!currentGame) return;
+  for (const clip of currentGame.clips) {
+    if (!clip.selected) { clip.selected = true; await saveSelection(clip.moment_id, true); }
+  }
+  renderClipsList(currentGame);
+});
+document.getElementById('deselectAllBtn').addEventListener('click', async () => {
+  if (!currentGame) return;
+  for (const clip of currentGame.clips) {
+    if (clip.selected !== false) { clip.selected = false; await saveSelection(clip.moment_id, false); }
+  }
+  renderClipsList(currentGame);
+});
+
+async function saveSelection(momentId, selected) {
+  try {
+    await fetch(`${API}/api/update-selection`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ moment_id: momentId, selected })
+    });
+  } catch {}
+}
+
+// ── Build reel ──────────────────────────────────────────────
+document.getElementById('buildReelBtn').addEventListener('click', async () => {
+  if (!currentGame) return;
+  const selected = currentGame.clips.filter(c => c.selected !== false);
+  if (!selected.length) { showToast('No clips selected', 'Toggle clips on to include them in the reel.'); return; }
+
+  const seasonName = manifest.seasons[currentGame._seasonIdx]?.name || '';
+  const gameName = `game_${currentGame.number || 'unknown'}`;
+  const outputName = `${seasonName}_${gameName}`.replace(/[^\w]/g, '_');
+
+  showToast('Building reel…', `Combining ${selected.length} clip${selected.length !== 1 ? 's' : ''}. This may take a minute.`);
+
+  try {
+    const res = await fetch(`${API}/api/build-reel`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clip_ids: selected.map(c => c.moment_id),
+        season: seasonName,
+        game_number: currentGame.number,
+        output_name: outputName
+      })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast('Reel building in background', `Output: ${data.output}`, 5000);
+    } else {
+      showToast('Build failed', data.error || 'Unknown error');
+    }
+  } catch (err) {
+    showToast('Error', 'Could not reach server. Is it running?');
+  }
+});
+
+document.getElementById('clipsClose').addEventListener('click', () => {
+  document.getElementById('clipsPanel').classList.add('hidden');
+  currentGame = null;
+  document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+});
+
+// ── Toast ────────────────────────────────────────────────────
+let toastTimer;
+function showToast(title, sub, duration = 3500) {
+  clearTimeout(toastTimer);
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub || '';
+  const toast = document.getElementById('toast');
+  toast.classList.remove('hidden');
+  toastTimer = setTimeout(() => toast.classList.add('hidden'), duration);
+}
+
+// ── Panel tab switching ──────────────────────────────────────
+let currentPanelTab = 'clips';
+
+function switchPanelTab(tab) {
+  currentPanelTab = tab;
+  document.getElementById('tabClips').classList.toggle('active', tab === 'clips');
+  document.getElementById('tabFullGame').classList.toggle('active', tab === 'fullgame');
+  document.getElementById('clipsList').classList.toggle('hidden', tab !== 'clips');
+  document.getElementById('fullGamePanel').classList.toggle('hidden', tab !== 'fullgame');
+  document.getElementById('clipsActions').classList.toggle('hidden', tab !== 'clips');
+
+  if (tab === 'fullgame' && currentGame) {
+    renderFullGamePanel(currentGame);
+  }
+}
+
+// ── Full-game marker state ───────────────────────────────────
+let markerInPoint = null;
+let markerOutPoint = null;
+let marks = [];       // [{start, end, label}]
+let markerVideo = null;
+
+function fmtTime(s) {
+  if (s == null || isNaN(s)) return '—';
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = Math.floor(s % 60);
+  const ms = Math.floor((s % 1) * 10);
+  if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  return `${m}:${String(sec).padStart(2,'0')}.${ms}`;
+}
+
+function renderFullGamePanel(game) {
+  const panel = document.getElementById('fullGamePanel');
+  const fullFiles = game.full_game_files || [];
+
+  if (!fullFiles.length) {
+    panel.innerHTML = `<div class="marks-empty">No full game recording found for this game.<br>Add a <code>Trace-FullGame-*.mp4</code> file to the game folder.</div>`;
+    return;
+  }
+
+  // Load saved marks from game
+  marks = (game.full_game_marks || []).map(m => ({...m}));
+  markerInPoint = null;
+  markerOutPoint = null;
+
+  // Use first file (half 1 by default — user can switch)
+  const activeFile = fullFiles[0];
+
+  panel.innerHTML = `
+    <div class="marker-panel">
+      ${fullFiles.length > 1 ? `
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${fullFiles.map((f,i) => `
+            <button class="btn btn-outline btn-sm ${i===0?'active':''}"
+                    id="halfBtn_${i}"
+                    onclick="switchHalf(${i})">${f.label || (f.half ? `Half ${f.half}` : `File ${i+1}`)}</button>`).join('')}
+        </div>` : ''}
+
+      <div class="marker-video-wrap">
+        <video id="markerVid" src="${fileUrl(activeFile.file)}" controls playsinline preload="metadata"
+               style="width:100%;max-height:200px;display:block"></video>
+      </div>
+
+      <div class="marker-controls">
+        <div class="marker-time" id="markerClock">0:00.0</div>
+        <button class="btn btn-sm btn-in"  onclick="setIn()"  title="Set In Point (I)">[ In</button>
+        <button class="btn btn-sm btn-out" onclick="setOut()" title="Set Out Point (O)">Out ]</button>
+        <button class="btn btn-sm btn-mark" onclick="saveMark()" title="Save this mark">+ Save Mark</button>
+      </div>
+
+      <div class="in-out-display">
+        In: <span id="inDisplay">—</span>
+        &nbsp;·&nbsp;
+        Out: <span id="outDisplay">—</span>
+        &nbsp;·&nbsp;
+        Dur: <span id="durDisplay">—</span>
+      </div>
+
+      <div class="timeline-wrap" id="timelineWrap" onclick="seekTimeline(event)">
+        <div class="timeline-progress" id="timelineProgress" style="width:0%"></div>
+        <div class="timeline-cursor"   id="timelineCursor"   style="left:0%"></div>
+        <div id="timelineMarks"></div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-2)">
+          Marks <span id="markCount" style="color:var(--accent)">${marks.length}</span>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-sm btn-outline" onclick="clearAllMarks()">Clear All</button>
+          <button class="btn btn-sm btn-accent" id="buildMarksBtn" onclick="buildReelFromMarks()">⬡ Build Reel</button>
+        </div>
+      </div>
+
+      <div class="marks-list" id="marksList"></div>
+
+      <div style="font-size:11px;color:var(--txt-3);margin-top:4px">
+        Shortcuts: <span class="kbd">I</span> In &nbsp;
+        <span class="kbd">O</span> Out &nbsp;
+        <span class="kbd">Space</span> Play/Pause &nbsp;
+        <span class="kbd">←/→</span> ±5s
+      </div>
+    </div>`;
+
+  markerVideo = document.getElementById('markerVid');
+  markerVideo.addEventListener('timeupdate', onMarkerTimeUpdate);
+  renderMarksList();
+}
+
+function switchHalf(idx) {
+  if (!currentGame) return;
+  const file = currentGame.full_game_files[idx];
+  if (!file) return;
+  document.querySelectorAll('[id^="halfBtn_"]').forEach((b, i) => b.classList.toggle('active', i === idx));
+  markerVideo.src = fileUrl(file.file);
+  markerVideo.load();
+  markerInPoint = null;
+  markerOutPoint = null;
+  updateInOutDisplay();
+}
+
+function onMarkerTimeUpdate() {
+  if (!markerVideo) return;
+  const t = markerVideo.currentTime;
+  const dur = markerVideo.duration || 1;
+  document.getElementById('markerClock').textContent = fmtTime(t);
+  const pct = (t / dur) * 100;
+  document.getElementById('timelineProgress').style.width = pct + '%';
+  document.getElementById('timelineCursor').style.left = pct + '%';
+}
+
+function seekTimeline(e) {
+  if (!markerVideo) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  markerVideo.currentTime = pct * (markerVideo.duration || 0);
+}
+
+function setIn() {
+  if (!markerVideo) return;
+  markerInPoint = markerVideo.currentTime;
+  updateInOutDisplay();
+}
+function setOut() {
+  if (!markerVideo) return;
+  markerOutPoint = markerVideo.currentTime;
+  updateInOutDisplay();
+}
+
+function updateInOutDisplay() {
+  document.getElementById('inDisplay').textContent  = markerInPoint  != null ? fmtTime(markerInPoint)  : '—';
+  document.getElementById('outDisplay').textContent = markerOutPoint != null ? fmtTime(markerOutPoint) : '—';
+  const dur = (markerInPoint != null && markerOutPoint != null && markerOutPoint > markerInPoint)
+    ? fmtTime(markerOutPoint - markerInPoint) : '—';
+  document.getElementById('durDisplay').textContent = dur;
+  renderTimelineMarks();
+}
+
+function saveMark() {
+  if (markerInPoint == null || markerOutPoint == null) {
+    showToast('Set both In and Out first', 'Press I to set in-point, O to set out-point.');
+    return;
+  }
+  if (markerOutPoint <= markerInPoint) {
+    showToast('Out must be after In', 'Move the playhead forward before setting the out-point.');
+    return;
+  }
+  marks.push({ start: Math.round(markerInPoint * 10) / 10, end: Math.round(markerOutPoint * 10) / 10, label: '' });
+  marks.sort((a, b) => a.start - b.start);
+  markerInPoint = null;
+  markerOutPoint = null;
+  updateInOutDisplay();
+  renderMarksList();
+  persistMarks();
+}
+
+function deleteMark(idx) {
+  marks.splice(idx, 1);
+  renderMarksList();
+  persistMarks();
+}
+
+function clearAllMarks() {
+  if (!marks.length) return;
+  marks = [];
+  renderMarksList();
+  persistMarks();
+}
+
+function renderMarksList() {
+  const el = document.getElementById('marksList');
+  const count = document.getElementById('markCount');
+  if (!el) return;
+  if (count) count.textContent = marks.length;
+
+  if (!marks.length) {
+    el.innerHTML = `<div class="marks-empty">
+      No marks yet.<br>
+      Play the video, press <span class="kbd">I</span> at the start of a moment,
+      <span class="kbd">O</span> at the end, then <strong>Save Mark</strong>.
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = marks.map((m, i) => `
+    <div class="mark-item">
+      <div class="mark-num">${i + 1}</div>
+      <div class="mark-times">
+        <div>${fmtTime(m.start)} → ${fmtTime(m.end)}</div>
+        <div class="mark-duration">${fmtTime(m.end - m.start)} duration</div>
+      </div>
+      <button class="mark-del" onclick="deleteMark(${i})" title="Delete mark">✕</button>
+    </div>`).join('');
+
+  renderTimelineMarks();
+}
+
+function renderTimelineMarks() {
+  const container = document.getElementById('timelineMarks');
+  if (!container || !markerVideo) return;
+  const dur = markerVideo.duration || 1;
+
+  // Pending in-point marker
+  let html = marks.map(m => {
+    const left = (m.start / dur) * 100;
+    const width = ((m.end - m.start) / dur) * 100;
+    return `<div class="timeline-mark" style="left:${left}%;width:${width}%"></div>`;
+  }).join('');
+
+  // Preview in-point
+  if (markerInPoint != null) {
+    const left = (markerInPoint / dur) * 100;
+    html += `<div style="position:absolute;top:0;left:${left}%;width:2px;height:100%;background:var(--success);"></div>`;
+  }
+  if (markerOutPoint != null) {
+    const left = (markerOutPoint / dur) * 100;
+    html += `<div style="position:absolute;top:0;left:${left}%;width:2px;height:100%;background:var(--danger);"></div>`;
+  }
+  container.innerHTML = html;
+}
+
+async function persistMarks() {
+  if (!currentGame) return;
+  const seasonName = (manifest.seasons[currentGame._seasonIdx] || {}).name || '';
+  try {
+    await fetch(`${API}/api/save-marks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        season_name: seasonName,
+        game_number: currentGame.number,
+        marks
+      })
+    });
+    // Update local copy so marks survive panel switches
+    currentGame.full_game_marks = marks.map(m => ({...m}));
+  } catch {}
+}
+
+async function buildReelFromMarks() {
+  if (!currentGame || !marks.length) {
+    showToast('No marks', 'Add at least one In/Out mark first.');
+    return;
+  }
+  const fullFiles = currentGame.full_game_files || [];
+  if (!fullFiles.length) {
+    showToast('No full game file', 'No full game recording found for this game.');
+    return;
+  }
+
+  // Use whichever half is currently loaded in the marker video
+  const currentSrc = markerVideo ? markerVideo.src : '';
+  const activeFile = fullFiles.find(f => currentSrc.includes(encodeURIComponent(f.file).replace(/%2F/g, '/'))) || fullFiles[0];
+
+  const seasonName = (manifest.seasons[currentGame._seasonIdx] || {}).name || '';
+  const outputName = `${seasonName}_game${currentGame.number}_marked`.replace(/[^\w]/g, '_');
+
+  showToast('Extracting marks…', `Cutting ${marks.length} segment${marks.length !== 1 ? 's' : ''} from full game. May take a minute.`);
+
+  try {
+    const res = await fetch(`${API}/api/build-reel-from-marks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ video_file: activeFile.file, marks, output_name: outputName })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast('Reel building in background', `Output: ${data.output}`, 6000);
+    } else {
+      showToast('Build failed', data.error || 'Unknown error');
+    }
+  } catch {
+    showToast('Error', 'Could not reach server.');
+  }
+}
+
+// ── Keyboard shortcuts for marker panel ─────────────────────
+document.addEventListener('keydown', (e) => {
+  // Only fire when no input is focused and the full-game panel is active
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  if (currentPanelTab !== 'fullgame' || !markerVideo) return;
+
+  if (e.key === 'i' || e.key === 'I') { e.preventDefault(); setIn(); }
+  if (e.key === 'o' || e.key === 'O') { e.preventDefault(); setOut(); }
+  if (e.key === ' ') {
+    e.preventDefault();
+    markerVideo.paused ? markerVideo.play() : markerVideo.pause();
+  }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); markerVideo.currentTime = Math.max(0, markerVideo.currentTime - 5); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); markerVideo.currentTime = Math.min(markerVideo.duration, markerVideo.currentTime + 5); }
+});
+
+// ── Init ─────────────────────────────────────────────────────
+loadManifest();
+</script>
+</body>
+</html>

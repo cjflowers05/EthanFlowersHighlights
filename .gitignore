@@ -1,0 +1,29 @@
+# Large video files — stay local, upload to YouTube separately
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OAuth tokens and secrets — never commit these
+tools/client_secrets.json
+tools/youtube_token.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Output reels (stay local)
+output/reels/
+
+# Keep thumbnails and manifest (small files, needed for the site)
+!output/thumbnails/
+!output/manifest.json
+!output/upload_log.json

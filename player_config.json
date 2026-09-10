@@ -1,0 +1,41 @@
+{
+  "name": "Ethan Flowers",
+  "tabs": [
+    {
+      "team": "Fuquay Varina Bengals",
+      "folder": "Fuquay Varina Bengals",
+      "year": "2026",
+      "season_folder": "2026 Season",
+      "jersey": 19,
+      "position": "Left Back",
+      "league": "High School"
+    },
+    {
+      "team": "Carolina Velocity FC",
+      "folder": "Carolina Velocity FC",
+      "year": "2026",
+      "season_folder": "2026 Season",
+      "jersey": 3,
+      "position": "Left Back",
+      "league": "MLS Next"
+    },
+    {
+      "team": "Fuquay Varina Bengals",
+      "folder": "Fuquay Varina Bengals",
+      "year": "2025",
+      "season_folder": "2025 Season",
+      "jersey": 19,
+      "position": "Left Back",
+      "league": "High School"
+    },
+    {
+      "team": "NCFC ECNL",
+      "folder": "NCFC ECNL",
+      "year": "2025",
+      "season_folder": "2025 Season",
+      "jersey": null,
+      "position": "Left/Right Back",
+      "league": "ECNL"
+    }
+  ]
+}
