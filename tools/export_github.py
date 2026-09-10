@@ -122,11 +122,12 @@ def patch_viewer_for_static(html_content, manifest_json):
             'async function loadManifest() {\n  if (window.__STATIC_MANIFEST__) { manifest = window.__STATIC_MANIFEST__; render(); return; }'
         )
 
-    # Inject the manifest data right before </body>
+    # Inject the manifest data BEFORE the main <script> block so it's defined
+    # when loadManifest() runs — injecting after </body> is too late.
     inline_manifest = f"window.__STATIC_MANIFEST__ = {manifest_json};"
     html_content = html_content.replace(
-        '</body>',
-        f'<script>\n{inline_manifest}\n</script>\n</body>'
+        '<script>\nconst API',
+        f'<script>\n{inline_manifest}\n</script>\n<script>\nconst API'
     )
 
     return html_content
