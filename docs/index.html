@@ -805,34 +805,81 @@ video {
   .games-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 }
 
-/* Mobile (768px and below) */
+/* Mobile (768px and below) — bottom sheet */
 @media (max-width: 768px) {
   .hero { padding: 28px 16px 24px; }
   .nav { padding: 0 16px; }
   .nav-tab { padding: 12px 14px 10px; font-size: 13px; }
   .games-panel { padding: 16px; }
-  .main { flex-direction: column; }
+  .main { display: block; }  /* no flex column — sheet floats over */
+
+  /* Bottom sheet */
   .clips-panel {
+    position: fixed !important;
+    left: 0; right: 0; bottom: 0;
     width: 100% !important;
+    max-height: 72vh;
     border-left: none;
-    border-top: 1px solid var(--border);
-    max-height: 55vh;
+    border-top: none;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.55);
+    transform: translateY(100%);
+    transition: transform .32s cubic-bezier(.4,0,.2,1);
+    z-index: 200;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
+  .clips-panel.sheet-open {
+    transform: translateY(0);
+  }
+  /* keep hidden class working for desktop logic */
+  .clips-panel.hidden:not(.sheet-open) { display: flex; transform: translateY(100%); }
+
+  /* Drag handle */
+  .sheet-handle {
+    display: block;
+    width: 40px; height: 4px;
+    background: var(--txt-3);
+    border-radius: 2px;
+    margin: 10px auto 6px;
+    opacity: .5;
+    flex-shrink: 0;
+  }
+
+  /* Backdrop */
+  .sheet-backdrop {
+    display: block;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .32s;
+  }
+  .sheet-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .games-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
   .game-thumb-placeholder { font-size: 36px; }
   .game-card-info { padding: 10px 12px; }
   .hero-stats { gap: 16px; }
   .hero-teams { gap: 6px; }
+
   /* Player overlay: full-screen on mobile */
   .player-overlay { padding: 16px 12px; }
   video, #ytFrame { max-width: 100%; max-height: 55vw; border-radius: var(--r); }
   .player-header { padding: 0 0 12px; }
   .player-nav { gap: 8px; margin-top: 12px; }
   .player-nav .btn { padding: 8px 16px; font-size: 13px; }
-  /* Clips panel tabs */
   .ph-tabs { overflow-x: auto; scrollbar-width: none; }
   .ph-tabs::-webkit-scrollbar { display: none; }
+}
+/* Hide handle/backdrop on desktop */
+@media (min-width: 769px) {
+  .sheet-handle { display: none; }
+  .sheet-backdrop { display: none !important; }
 }
 
 /* Small phone (480px and below) */
@@ -880,7 +927,9 @@ video {
       <p>Loading highlights…</p>
     </div>
   </div>
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
   <aside class="clips-panel hidden" id="clipsPanel">
+    <span class="sheet-handle" aria-hidden="true"></span>
     <div class="clips-header">
       <div class="clips-header-top">
         <div class="clips-game-title" id="clipsTitle">Select a game</div>
@@ -1539,7 +1588,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-10T14:00:31.437597"
+  "exported_at": "2026-09-10T14:03:36.181638"
 };
 </script>
 <script>
@@ -1722,6 +1771,27 @@ function formatDate(dateStr) {
 }
 
 // ── Game / Clip panel ───────────────────────────────────────
+function isMobile() { return window.innerWidth <= 768; }
+
+function openSheet() {
+  const panel = document.getElementById('clipsPanel');
+  const backdrop = document.getElementById('sheetBackdrop');
+  panel.classList.remove('hidden');
+  requestAnimationFrame(() => panel.classList.add('sheet-open'));
+  if (backdrop) { backdrop.classList.add('visible'); }
+}
+
+function closeSheet() {
+  const panel = document.getElementById('clipsPanel');
+  const backdrop = document.getElementById('sheetBackdrop');
+  panel.classList.remove('sheet-open');
+  if (backdrop) backdrop.classList.remove('visible');
+  // Wait for slide-out animation before hiding
+  setTimeout(() => {
+    if (!panel.classList.contains('sheet-open')) panel.classList.add('hidden');
+  }, 340);
+}
+
 function selectGame(seasonIdx, gameIdx) {
   const season = manifest.seasons[seasonIdx];
   const game = season.games[gameIdx];
@@ -1734,9 +1804,14 @@ function selectGame(seasonIdx, gameIdx) {
 
   // Populate clips panel
   const panel = document.getElementById('clipsPanel');
-  panel.classList.remove('hidden');
   document.getElementById('clipsTitle').textContent = `vs ${game.away_team || 'Opponent'}`;
   renderClipsList(game);
+
+  if (isMobile()) {
+    openSheet();
+  } else {
+    panel.classList.remove('hidden');
+  }
 }
 
 function renderClipsList(game) {
@@ -1988,11 +2063,18 @@ document.getElementById('buildReelBtn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('clipsClose').addEventListener('click', () => {
-  document.getElementById('clipsPanel').classList.add('hidden');
+function dismissPanel() {
   currentGame = null;
   document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
-});
+  if (isMobile()) {
+    closeSheet();
+  } else {
+    document.getElementById('clipsPanel').classList.add('hidden');
+  }
+}
+
+document.getElementById('clipsClose').addEventListener('click', dismissPanel);
+document.getElementById('sheetBackdrop').addEventListener('click', dismissPanel);
 
 // ── Toast ────────────────────────────────────────────────────
 let toastTimer;
