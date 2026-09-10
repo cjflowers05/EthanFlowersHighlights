@@ -797,19 +797,54 @@ video {
 }
 
 /* ── Responsive ────────────────────────────────────────────── */
+
+/* Tablet (1024px and below) */
+@media (max-width: 1024px) {
+  .clips-panel { width: 340px; }
+  .games-panel { padding: 24px 28px 32px; }
+  .games-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+}
+
+/* Mobile (768px and below) */
 @media (max-width: 768px) {
-  .hero { padding: 32px 20px 28px; }
-  .nav { padding: 0 20px; }
-  .games-panel { padding: 20px; }
+  .hero { padding: 28px 16px 24px; }
+  .nav { padding: 0 16px; }
+  .nav-tab { padding: 12px 14px 10px; font-size: 13px; }
+  .games-panel { padding: 16px; }
   .main { flex-direction: column; }
   .clips-panel {
     width: 100% !important;
     border-left: none;
     border-top: 1px solid var(--border);
-    max-height: 60vh;
+    max-height: 55vh;
+    overflow-y: auto;
   }
-  .hero-stats { gap: 20px; }
+  .games-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .game-thumb-placeholder { font-size: 36px; }
+  .game-card-info { padding: 10px 12px; }
+  .hero-stats { gap: 16px; }
+  .hero-teams { gap: 6px; }
+  /* Player overlay: full-screen on mobile */
+  .player-overlay { padding: 16px 12px; }
+  video, #ytFrame { max-width: 100%; max-height: 55vw; border-radius: var(--r); }
+  .player-header { padding: 0 0 12px; }
+  .player-nav { gap: 8px; margin-top: 12px; }
+  .player-nav .btn { padding: 8px 16px; font-size: 13px; }
+  /* Clips panel tabs */
+  .ph-tabs { overflow-x: auto; scrollbar-width: none; }
+  .ph-tabs::-webkit-scrollbar { display: none; }
 }
+
+/* Small phone (480px and below) */
+@media (max-width: 480px) {
+  .hero { padding: 20px 14px 18px; }
+  .games-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .game-thumb-placeholder { font-size: 28px; }
+  .section-title { font-size: 18px; }
+  .hero-stats { gap: 12px; }
+  .stat-value { font-size: 22px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
 }
@@ -1504,7 +1539,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-10T13:56:03.685734"
+  "exported_at": "2026-09-10T14:00:31.437597"
 };
 </script>
 <script>
