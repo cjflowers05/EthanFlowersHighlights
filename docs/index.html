@@ -897,6 +897,7 @@ let currentClipIndex = -1;
 // ── Fetch manifest ──────────────────────────────────────────
 async function loadManifest() {
   try {
+    if (window.__STATIC_MANIFEST__) { manifest = window.__STATIC_MANIFEST__; render(); return; }
     const res = await fetch(`${API}/api/manifest`);
     if (!res.ok) throw new Error(await res.text());
     manifest = await res.json();
@@ -1640,7 +1641,8 @@ document.addEventListener('keydown', (e) => {
 // ── Init ─────────────────────────────────────────────────────
 loadManifest();
 </script>
-<script>window.__STATIC_MANIFEST__ = {
+<script>
+window.__STATIC_MANIFEST__ = {
   "player": {
     "name": "Ethan Flowers",
     "tabs": [
@@ -2256,7 +2258,8 @@ loadManifest();
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-10T12:25:47.156387"
-};</script>
+  "exported_at": "2026-09-10T12:33:19.883504"
+};
+</script>
 </body>
 </html>

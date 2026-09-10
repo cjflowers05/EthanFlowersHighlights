@@ -107,35 +107,28 @@ def copy_thumbnails(src_dir, dest_dir):
 def patch_viewer_for_static(html_content, manifest_json):
     """
     Embed the manifest directly into the HTML so it works without a server.
-    Replace the fetch('/api/manifest') call with inline data.
+    Patches the async loadManifest() to use window.__STATIC_MANIFEST__ first.
     """
-    # Embed manifest as a JS variable before the closing </script>
-    inline_manifest = f"window.__STATIC_MANIFEST__ = {manifest_json};"
-
-    # Find the fetch('/api/manifest') call and replace with static version
-    old_fetch = """fetch('/api/manifest')
-      .then(r => r.json())
-      .then(data => {
-        manifest = data;
-        renderSeasons();
-      })"""
-
-    new_fetch = """(async () => {
-        manifest = window.__STATIC_MANIFEST__ || await fetch('/api/manifest').then(r=>r.json()).catch(()=>null);
-        if (manifest) renderSeasons();
-      })()"""
+    # Replace the fetch call inside loadManifest to check static data first
+    old_fetch = "    const res = await fetch(`${API}/api/manifest`);\n    if (!res.ok) throw new Error(await res.text());\n    manifest = await res.json();"
+    new_fetch = "    if (window.__STATIC_MANIFEST__) { manifest = window.__STATIC_MANIFEST__; render(); return; }\n    const res = await fetch(`${API}/api/manifest`);\n    if (!res.ok) throw new Error(await res.text());\n    manifest = await res.json();"
 
     if old_fetch in html_content:
         html_content = html_content.replace(old_fetch, new_fetch)
+    else:
+        # Fallback: patch loadManifest to always use static manifest when available
+        html_content = html_content.replace(
+            'async function loadManifest() {',
+            'async function loadManifest() {\n  if (window.__STATIC_MANIFEST__) { manifest = window.__STATIC_MANIFEST__; render(); return; }'
+        )
 
     # Inject the manifest data right before </body>
+    inline_manifest = f"window.__STATIC_MANIFEST__ = {manifest_json};"
     html_content = html_content.replace(
         '</body>',
-        f'<script>{inline_manifest}</script>\n</body>'
+        f'<script>\n{inline_manifest}\n</script>\n</body>'
     )
 
-    # Patch video playback: in static mode, use YouTube embed instead of local file
-    # We add a flag that renderClipsList and playPlayerHighlight check
     return html_content
 
 
@@ -208,7 +201,7 @@ def main():
     print("Done! Static site ready at: " + str(out_dir) + "/")
     print("")
     print("To publish: git add docs/ && git commit -m 'Update site' && git push")
-    print("Live at: https://cjflowers05.github.io/ethan-soccer-site/")
+    print("Live at: https://cjflowers05.github.io/EthanFlowersHighlights/")
 
     if args.open:
         webbrowser.open(str(out_dir / "index.html"))
