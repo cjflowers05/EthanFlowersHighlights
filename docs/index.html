@@ -1088,6 +1088,38 @@ video {
   padding: 5px 14px;
   margin: 4px 4px 4px 0;
 }
+.bio-cta-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.bio-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .12s, opacity .12s;
+  border: none;
+}
+.bio-cta-btn:hover { transform: translateY(-2px); opacity: .9; }
+.bio-cta-btn.email {
+  background: var(--accent);
+  color: #111;
+}
+.bio-cta-btn.phone {
+  background: var(--bg-card);
+  color: var(--txt);
+  border: 1px solid var(--border-accent);
+}
 .nav-bio-btn {
   padding: 7px 18px;
   font-family: 'Barlow Condensed', sans-serif;
@@ -2555,7 +2587,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-11T12:37:41.810785"
+  "exported_at": "2026-09-11T16:15:04.971963"
 };
 </script>
 <script>
@@ -2707,7 +2739,12 @@ function renderBio() {
   const accolades = bio.accolades || [];
   const parents = contact.parents || [];
 
+  const phoneRaw = (contact.player_phone || '').replace(/\D/g, '');
   panel.innerHTML = `
+    <div class="bio-cta-row">
+      <a class="bio-cta-btn email" href="mailto:${contact.player_email || ''}">✉ Email Ethan</a>
+      ${contact.player_phone ? `<a class="bio-cta-btn phone" href="tel:${phoneRaw}">📱 ${contact.player_phone}</a>` : ''}
+    </div>
     <div class="bio-grid">
       <div class="bio-card">
         <div class="bio-card-title">Player Info</div>
