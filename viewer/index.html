@@ -307,8 +307,15 @@ a { color: inherit; text-decoration: none; }
 .contact-btn.email { background: var(--accent); color: #111; }
 .contact-btn.phone { background: var(--bg-card); color: var(--txt); border: 1px solid var(--border-accent); }
 @media (max-width: 768px) {
-  .gallery-section { flex-direction: column; align-items: flex-start; }
-  .gallery-contact { flex-direction: row; }
+  .gallery-section { padding: 12px 16px; gap: 0; }
+  .gallery-main { display: none; }
+  .gallery-contact {
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+  }
+  .gallery-contact-label { display: none; }
+  .contact-btn { flex: 1; justify-content: center; font-size: 13px; padding: 10px 12px; }
 }
 
 /* ── Nav/Tabs ──────────────────────────────────────────────── */
