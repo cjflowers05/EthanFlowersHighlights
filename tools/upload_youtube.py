@@ -28,6 +28,12 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Force UTF-8 output so Unicode progress characters print on Windows
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 BASE_DIR = Path(__file__).parent.parent
 REELS_DIR = BASE_DIR / "output" / "reels"
 SECRETS_FILE = Path(__file__).parent / "client_secrets.json"
@@ -38,6 +44,10 @@ SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 
 
 def get_credentials():
+    import threading
+    import webbrowser
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    from urllib.parse import urlparse, parse_qs
     from google.oauth2.credentials import Credentials
     from google.auth.transport.requests import Request
     from google_auth_oauthlib.flow import InstalledAppFlow
@@ -63,8 +73,53 @@ First-time setup:
 """)
                 sys.exit(1)
 
+            PORT = 58080
+            auth_code = [None]
+            auth_done = threading.Event()
+
+            class _Handler(BaseHTTPRequestHandler):
+                def do_GET(self):
+                    params = parse_qs(urlparse(self.path).query)
+                    if 'code' in params:
+                        auth_code[0] = params['code'][0]
+                        self.send_response(200)
+                        self.send_header('Content-Type', 'text/html')
+                        self.end_headers()
+                        self.wfile.write(b'<h2>Authorization complete! You can close this tab.</h2>')
+                        auth_done.set()
+                    else:
+                        self.send_response(400)
+                        self.end_headers()
+                def log_message(self, *args):
+                    pass
+
+            server = HTTPServer(('localhost', PORT), _Handler)
+
             flow = InstalledAppFlow.from_client_secrets_file(str(SECRETS_FILE), SCOPES)
-            creds = flow.run_local_server(port=0)
+            flow.redirect_uri = f'http://localhost:{PORT}/'
+            auth_url, _ = flow.authorization_url(access_type='offline', prompt='consent')
+
+            def _serve():
+                server.handle_request()
+                server.server_close()
+
+            t = threading.Thread(target=_serve, daemon=True)
+            t.start()
+
+            print(f"\nOpening browser for Google authorization...")
+            print(f"If the browser doesn't open, visit:\n  {auth_url}\n")
+            webbrowser.open(auth_url)
+            print("Waiting for you to approve (120s timeout)...")
+
+            auth_done.wait(timeout=120)
+            t.join(timeout=5)
+
+            if not auth_code[0]:
+                print("Authorization timed out. Re-run the script and approve quickly.")
+                sys.exit(1)
+
+            flow.fetch_token(code=auth_code[0])
+            creds = flow.credentials
 
         with open(TOKEN_FILE, 'w') as f:
             f.write(creds.to_json())
@@ -206,7 +261,44 @@ def find_full_game_files():
     return results
 
 
+def find_highlight_files():
+    """Find individual player highlight .mp4 files (contain #<number> in filename)."""
+    import re as _re
+    results = []
+    skip = {'tools', 'viewer', 'output', '.git', '__pycache__'}
+    for team_dir in BASE_DIR.iterdir():
+        if not team_dir.is_dir() or team_dir.name in skip:
+            continue
+        for season_dir in team_dir.iterdir():
+            if not season_dir.is_dir():
+                continue
+            for game_dir in season_dir.iterdir():
+                if not game_dir.is_dir():
+                    continue
+                for f in sorted(game_dir.glob("*.mp4")):
+                    if _re.search(r'#\d+', f.name) and 'fullgame' not in f.name.lower():
+                        results.append((game_dir.name, team_dir.name, season_dir.name, f))
+    return results
+
+
+def make_title_highlight(game_folder, team, season, file_path):
+    """Generate a YouTube title for a player highlight file."""
+    # Strip leading game number from folder name: "6 FV vs Enloe" → "FV vs Enloe"
+    game = re.sub(r'^\d+[\.\s]+', '', game_folder).strip()
+    return f"Ethan Flowers | {game} | {file_path.stem}"
+
+
 def list_available():
+    print("\n── Player Highlights ───────────────────────────────────")
+    hl_files = find_highlight_files()
+    if hl_files:
+        for game_folder, team, season, f in hl_files:
+            uploaded = already_uploaded(f)
+            flag = f"  ↗ {uploaded}" if uploaded else ""
+            print(f"  {game_folder}/{f.name}  ({f.stat().st_size/1024/1024:.0f} MB){flag}")
+    else:
+        print("  (none found — looking for *.mp4 files with #19 or similar in game folders)")
+
     print("\n── Compiled Reels ─────────────────────────────────────")
     reels = sorted(REELS_DIR.glob("*.mp4"), key=lambda f: f.stat().st_mtime, reverse=True)
     if reels:
@@ -251,9 +343,10 @@ def main():
     parser.add_argument("--file", help="Upload a specific MP4 file")
     parser.add_argument("--title", help="Custom title (auto-generated if omitted)")
     parser.add_argument("--reels", action="store_true", help="Upload all compiled highlight reels")
+    parser.add_argument("--highlights", action="store_true", help="Upload individual game highlight files (#19, #3, etc.)")
     parser.add_argument("--fullgame", action="store_true", help="Upload all full game recordings")
     parser.add_argument("--all", dest="upload_all", action="store_true",
-                        help="Upload both reels and full game recordings")
+                        help="Upload highlights, reels, and full game recordings")
     parser.add_argument("--privacy", choices=["unlisted", "private", "public"], default="unlisted",
                         help="YouTube privacy (default: unlisted)")
     parser.add_argument("--list", action="store_true", help="List available files and exit")
@@ -277,6 +370,14 @@ def main():
             sys.exit(1)
         title = args.title or make_title_reel(file_path)
         to_upload.append((file_path, title, "custom"))
+
+    if args.highlights or args.upload_all:
+        hl_files = find_highlight_files()
+        if not hl_files:
+            print("No player highlight files found (looking for *.mp4 with #19 or similar).")
+        for game_folder, team, season, f in hl_files:
+            title = args.title or make_title_highlight(game_folder, team, season, f)
+            to_upload.append((f, title, "highlight"))
 
     if args.reels or args.upload_all:
         reels = sorted(REELS_DIR.glob("*.mp4"), key=lambda f: f.stat().st_mtime, reverse=True)

@@ -104,6 +104,22 @@ def copy_thumbnails(src_dir, dest_dir):
         print("  No thumbnails to copy")
 
 
+def copy_still_photos(src_dir, dest_dir):
+    """Copy StillPhotos to the export folder."""
+    photos_src = src_dir / "StillPhotos"
+    photos_dest = dest_dir / "StillPhotos"
+    if photos_src.exists():
+        photos_dest.mkdir(parents=True, exist_ok=True)
+        copied = 0
+        for f in photos_src.glob("*"):
+            if f.suffix.lower() in {'.jpg', '.jpeg', '.png', '.webp'}:
+                shutil.copy2(f, photos_dest / f.name)
+                copied += 1
+        print(f"  Copied {copied} still photos")
+    else:
+        print("  No StillPhotos folder found")
+
+
 def patch_viewer_for_static(html_content, manifest_json):
     """
     Embed the manifest directly into the HTML so it works without a server.
@@ -129,6 +145,91 @@ def patch_viewer_for_static(html_content, manifest_json):
         '<script>\nconst API',
         f'<script>\n{inline_manifest}\n</script>\n<script>\nconst API'
     )
+
+    # Fix fileUrl: remove leading '/' so paths are relative (required for GitHub Pages
+    # project sites where the repo is served under a subpath like /EthanFlowersHighlights/).
+    html_content = html_content.replace(
+        "return '/' + relPath.split('/').map(s => encodeURIComponent(s)).join('/');",
+        "return relPath.split('/').map(s => encodeURIComponent(s)).join('/');"
+    )
+
+    # Fix thumbnail src (game cards and player highlight list) — strip leading slash.
+    html_content = html_content.replace(
+        '`<img src="/${thumb}"',
+        '`<img src="${thumb}"'
+    )
+    html_content = html_content.replace(
+        '`<img src="/${ph.thumbnail}"',
+        '`<img src="${ph.thumbnail}"'
+    )
+
+    # Fix video player: use YouTube embed iframe when available, else show message.
+    old_open_ph = """\
+function playPlayerHighlight(idx) {
+  if (!currentGame) return;
+  const ph = (currentGame.player_highlights || [])[idx];
+  if (!ph) return;
+  const overlay = document.getElementById('playerOverlay');
+  const video = document.getElementById('videoEl');
+  document.getElementById('playerTitle').textContent = ph.label;
+  video.src = fileUrl(ph.file);
+  video.load();
+  video.play();
+  overlay.classList.remove('hidden');
+}"""
+    new_open_ph = """\
+function playPlayerHighlight(idx) {
+  if (!currentGame) return;
+  const ph = (currentGame.player_highlights || [])[idx];
+  if (!ph) return;
+  const overlay = document.getElementById('playerOverlay');
+  const video = document.getElementById('videoEl');
+  document.getElementById('playerTitle').textContent = ph.label;
+  // Static site: use YouTube embed if available
+  let iframe = document.getElementById('ytFrame');
+  let msg = document.getElementById('ytMsg');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'ytFrame';
+    iframe.setAttribute('allow', 'autoplay; encrypted-media; fullscreen');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.style.cssText = 'width:100%;aspect-ratio:16/9;border:none;display:none;';
+    video.parentNode.insertBefore(iframe, video.nextSibling);
+  }
+  if (!msg) {
+    msg = document.createElement('div');
+    msg.id = 'ytMsg';
+    msg.style.cssText = 'color:#aaa;text-align:center;padding:60px 20px;font-size:1.1rem;display:none;';
+    video.parentNode.insertBefore(msg, video.nextSibling);
+  }
+  video.style.display = 'none'; video.src = '';
+  iframe.style.display = 'none'; iframe.src = '';
+  msg.style.display = 'none';
+  if (ph.youtube_embed) {
+    iframe.src = ph.youtube_embed + '?autoplay=1';
+    iframe.style.display = 'block';
+  } else {
+    msg.textContent = 'Video coming soon — not yet uploaded to YouTube.';
+    msg.style.display = 'block';
+  }
+  overlay.classList.remove('hidden');
+}"""
+
+    if old_open_ph in html_content:
+        html_content = html_content.replace(old_open_ph, new_open_ph)
+
+    # Also clear the iframe src on close so it stops playing.
+    old_close = """\
+function closePlayer() {
+  document.getElementById('playerOverlay').classList.add('hidden');
+  document.getElementById('videoEl').pause();"""
+    new_close = """\
+function closePlayer() {
+  document.getElementById('playerOverlay').classList.add('hidden');
+  document.getElementById('videoEl').pause();
+  const ytf = document.getElementById('ytFrame'); if (ytf) ytf.src = '';"""
+    if old_close in html_content:
+        html_content = html_content.replace(old_close, new_close)
 
     return html_content
 
@@ -173,6 +274,9 @@ def main():
 
     # Copy thumbnails
     copy_thumbnails(BASE_DIR, out_dir)
+
+    # Copy still photos
+    copy_still_photos(BASE_DIR, out_dir)
 
     # Write a manifest.json for reference
     (out_dir / "manifest.json").write_text(manifest_json, encoding="utf-8")

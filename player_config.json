@@ -35,7 +35,8 @@
       "season_folder": "2025 Season",
       "jersey": null,
       "position": "Left/Right Back",
-      "league": "ECNL"
+      "league": "ECNL",
+      "former": true
     }
   ]
 }

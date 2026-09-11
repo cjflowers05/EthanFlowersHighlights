@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,6 +88,43 @@ a { color: inherit; text-decoration: none; }
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, #0a0d14 0%, #111828 60%, #0e1420 100%);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.hero-bg-photo {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 50%;
+  background: url('StillPhotos/Mid-Game.jpg') center top / cover no-repeat;
+  z-index: 0;
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.12) 28%, rgba(0,0,0,.45) 60%, rgba(0,0,0,.7) 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.12) 28%, rgba(0,0,0,.45) 60%, rgba(0,0,0,.7) 100%);
+}
+.hero-bg-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,13,20,.5);
+}
+.hero-avatar {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  overflow: hidden;
+  box-shadow: 0 0 0 4px rgba(240,192,64,.15), 0 4px 20px rgba(0,0,0,.5);
+  align-self: flex-end;
+  margin-bottom: 4px;
+}
+.hero-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(15%);
 }
 .hero-grid-lines {
   position: absolute; inset: 0; pointer-events: none;
@@ -109,7 +146,7 @@ a { color: inherit; text-decoration: none; }
   user-select: none;
   letter-spacing: -0.02em;
 }
-.hero-content { position: relative; z-index: 1; max-width: 900px; }
+.hero-content { position: relative; z-index: 2; max-width: 900px; }
 .hero-eyebrow {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 13px;
@@ -186,6 +223,47 @@ a { color: inherit; text-decoration: none; }
   color: var(--txt-2);
 }
 
+/* ── Photo gallery strip ──────────────────────────────────── */
+.gallery-section {
+  padding: 16px 40px;
+  border-bottom: 1px solid var(--border);
+}
+.gallery-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+  margin-bottom: 10px;
+}
+.gallery-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gallery-strip::-webkit-scrollbar { display: none; }
+.gallery-item {
+  flex-shrink: 0;
+  width: 180px;
+  height: 120px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform .15s, border-color .15s;
+}
+.gallery-item:hover {
+  transform: scale(1.03);
+  border-color: var(--border-accent);
+}
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
 /* ── Nav/Tabs ──────────────────────────────────────────────── */
 .nav {
   display: flex;
@@ -216,6 +294,14 @@ a { color: inherit; text-decoration: none; }
 .nav-tab.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+.nav-tab.past-season {
+  color: #5a7ea8;
+}
+.nav-tab.past-season:hover { color: #7eaacc; }
+.nav-tab.past-season.active {
+  color: #7eaacc;
+  border-bottom-color: #7eaacc;
 }
 
 /* ── Main layout ───────────────────────────────────────────── */
@@ -309,6 +395,31 @@ a { color: inherit; text-decoration: none; }
   font-style: italic;
   letter-spacing: -0.02em;
 }
+/* Coming Soon tile */
+.game-card.placeholder {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+.game-card.placeholder .game-thumb-placeholder {
+  background: var(--bg-raised);
+  font-size: 13px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--txt-3);
+  flex-direction: column;
+  gap: 4px;
+}
+.game-card.placeholder .game-num-placeholder {
+  font-size: 36px;
+  font-weight: 900;
+  font-style: italic;
+  opacity: 0.4;
+  line-height: 1;
+}
+
 .game-num-badge {
   position: absolute;
   top: 8px; left: 8px;
@@ -902,7 +1013,11 @@ video {
 <!-- Hero -->
 <header class="hero">
   <div class="hero-grid-lines"></div>
+  <div class="hero-bg-photo"></div>
   <div class="hero-number" id="jerseyNumber">19</div>
+  <div class="hero-avatar">
+    <img src="StillPhotos/EthanHeadshot.jpg" alt="Ethan Flowers">
+  </div>
   <div class="hero-content">
     <div class="hero-eyebrow">Player Highlights Archive</div>
     <div class="hero-first-name" id="playerFirstName">ETHAN</div>
@@ -911,10 +1026,21 @@ video {
     <div class="hero-stats" id="heroStats">
       <div class="stat"><span class="stat-num">—</span><span class="stat-label">Seasons</span></div>
       <div class="stat"><span class="stat-num">—</span><span class="stat-label">Games</span></div>
-      <div class="stat"><span class="stat-num">—</span><span class="stat-label">Clips</span></div>
+      <div class="stat"><span class="stat-num">—</span><span class="stat-label">Videos</span></div>
     </div>
   </div>
 </header>
+
+<!-- Photo gallery -->
+<section class="gallery-section">
+  <div class="gallery-label">Photos</div>
+  <div class="gallery-strip">
+    <div class="gallery-item"><img src="StillPhotos/ActiveDefense2.jpg" alt="Active Defense"></div>
+    <div class="gallery-item"><img src="StillPhotos/Mid-Game.jpg" alt="Mid Game"></div>
+    <div class="gallery-item"><img src="StillPhotos/ActiveDefense1.jpg" alt="Active Defense"></div>
+    <div class="gallery-item"><img src="StillPhotos/EthanHeadshot.jpg" alt="Headshot"></div>
+  </div>
+</section>
 
 <!-- Season tabs -->
 <nav class="nav" id="seasonNav"></nav>
@@ -1035,26 +1161,28 @@ function render() {
   document.getElementById('jerseyNumber').textContent = activeSeason.jersey ? `#${activeSeason.jersey}` : '#19';
 
   // Stats across all seasons
-  const allGames = seasons.flatMap(s => s.games || []);
+  const allGames = seasons.flatMap(s => (s.games || []).filter(g => !g.placeholder));
   const allClips = allGames.flatMap(g => g.clips || []);
-  const seasonsWithFootage = seasons.filter(s => s.games && s.games.length > 0);
+  const allHighlights = allGames.flatMap(g => g.player_highlights || []);
+  const totalVideos = allClips.length + allHighlights.length;
   document.getElementById('heroStats').innerHTML = `
     <div class="stat">
-      <span class="stat-num">${seasonsWithFootage.length}</span>
-      <span class="stat-label">Season${seasonsWithFootage.length !== 1 ? 's' : ''}</span>
+      <span class="stat-num">${seasons.length}</span>
+      <span class="stat-label">Season${seasons.length !== 1 ? 's' : ''}</span>
     </div>
     <div class="stat">
       <span class="stat-num">${allGames.length}</span>
       <span class="stat-label">Game${allGames.length !== 1 ? 's' : ''}</span>
     </div>
     <div class="stat">
-      <span class="stat-num">${allClips.length}</span>
-      <span class="stat-label">Clip${allClips.length !== 1 ? 's' : ''}</span>
+      <span class="stat-num">${totalVideos}</span>
+      <span class="stat-label">Video${totalVideos !== 1 ? 's' : ''}</span>
     </div>`;
 
-  // Team badges — one per unique team from tabs, with position
+  // Team badges — current clubs only (former: true tabs are hidden from hero)
   const seen = new Set();
   const badges = seasons.filter(s => {
+    if (s.former) return false;
     const key = `${s.team}|${s.position}`;
     if (seen.has(key)) return false;
     seen.add(key);
@@ -1066,9 +1194,12 @@ function render() {
 
   // Season tabs
   const nav = document.getElementById('seasonNav');
-  nav.innerHTML = seasons.map((s, i) => `
-    <button class="nav-tab ${i === currentSeason ? 'active' : ''}"
-            onclick="switchSeason(${i})">${tabLabel(s)}</button>`).join('');
+  const latestYear = Math.max(...seasons.map(s => parseInt(s.year) || 0));
+  nav.innerHTML = seasons.map((s, i) => {
+    const isPast = (parseInt(s.year) || 0) < latestYear;
+    const cls = ['nav-tab', i === currentSeason ? 'active' : '', isPast ? 'past-season' : ''].filter(Boolean).join(' ');
+    return `<button class="${cls}" onclick="switchSeason(${i})">${tabLabel(s)}</button>`;
+  }).join('');
 
   renderGames();
 }
@@ -1107,14 +1238,33 @@ function renderGames() {
 
   const cards = season.games.map((game, gi) => {
     const isActive = currentGame && currentGame._seasonIdx === currentSeason && currentGame._gameIdx === gi;
+    const dateStr = game.date ? formatDate(game.date) : '';
+
+    // Placeholder tile for games with no footage yet
+    if (game.placeholder) {
+      return `
+        <div class="game-card placeholder">
+          <div class="game-thumb">
+            <div class="game-thumb-placeholder">
+              <span class="game-num-placeholder">${game.number || '?'}</span>
+              Coming Soon
+            </div>
+            ${game.number ? `<span class="game-num-badge">Game ${game.number}</span>` : ''}
+          </div>
+          <div class="game-info">
+            <div class="game-vs" style="color:var(--txt-3)">No footage yet</div>
+            <div class="game-meta">${dateStr ? `<span>${dateStr}</span>` : ''}</div>
+          </div>
+        </div>`;
+    }
+
     const thumb = game.clips[0]?.thumbnail;
     const thumbHtml = thumb
-      ? `<img src="/${thumb}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
         + `<div class="game-thumb-placeholder" style="display:none">${game.number || '?'}</div>`
       : `<div class="game-thumb-placeholder">${game.number || '?'}</div>`;
 
     const clipCount = game.clips.length;
-    const dateStr = game.date ? formatDate(game.date) : '';
 
     return `
       <div class="game-card ${isActive ? 'active' : ''}" onclick="selectGame(${currentSeason}, ${gi})">

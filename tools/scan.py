@@ -124,7 +124,7 @@ def generate_thumbnail(video_path, thumbnail_path, at_second=4):
 
 
 def sort_game_key(d):
-    m = re.match(r'^(\d+)\.', d.name)
+    m = re.match(r'^(\d+)[\.\s]', d.name)  # handle "10 FV vs..." and "10. FV vs..."
     return (int(m.group(1)) if m else 9999, d.name)
 
 
@@ -265,6 +265,7 @@ def scan():
             "season_folder": tab["season_folder"],
             "jersey": tab.get("jersey"),
             "position": tab.get("position", ""),
+            "former": tab.get("former", False),
             "league": tab.get("league", ""),
             "games": []
         }
@@ -284,6 +285,35 @@ def scan():
                         if manual:
                             game['date'] = manual
                     season["games"].append(game)
+
+            # Add placeholder tiles for all missing game numbers:
+            # 1. Any number in game_dates.json (known schedule)
+            # 2. Any gap between 1 and the highest game number found on disk
+            found_numbers = {g['number'] for g in season['games'] if g.get('number')}
+            max_found = max(found_numbers, default=0)
+            all_expected = set(range(1, max_found + 1))
+            # Also include any numbers from game_dates config beyond what was found
+            for num_str in team_dates:
+                all_expected.add(int(num_str))
+            for num in all_expected:
+                if num not in found_numbers:
+                    date = team_dates.get(str(num))
+                    season['games'].append({
+                        "number": num,
+                        "home_team": "",
+                        "away_team": "",
+                        "folder": None,
+                        "relative_path": None,
+                        "date": date,
+                        "clips": [],
+                        "player_highlights": [],
+                        "full_game_files": [],
+                        "compiled_reel": None,
+                        "placeholder": True
+                    })
+
+            # Sort all games by number
+            season['games'].sort(key=lambda g: (g.get('number') or 9999, g.get('folder') or ''))
 
         manifest["seasons"].append(season)
 
