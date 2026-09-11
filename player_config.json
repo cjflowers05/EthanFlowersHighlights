@@ -1,5 +1,39 @@
 {
   "name": "Ethan Flowers",
+  "bio": {
+    "height": "5'10\"",
+    "weight": "175 lbs",
+    "graduation_year": 2027,
+    "gpa": "4.2 Weighted",
+    "dominant_foot": "Right",
+    "positions": {
+      "primary": "Left Back",
+      "secondary": "Right Back"
+    },
+    "teams": [
+      {
+        "name": "Fuquay Varina High School",
+        "league": "High School",
+        "coach": "Jared Smith"
+      },
+      {
+        "name": "Carolina Velocity FC",
+        "league": "MLS Next",
+        "coach": "Dewan Bader"
+      }
+    ],
+    "contact": {
+      "player_email": "ethandflowers13@gmail.com",
+      "player_phone": "928-232-0379",
+      "parents": [
+        { "name": "Davalene Flowers", "email": "davaleneflowers@gmail.com" },
+        { "name": "Cody Flowers", "email": "c.j.flowers05@gmail.com" }
+      ]
+    },
+    "accolades": [
+      "All American"
+    ]
+  },
   "tabs": [
     {
       "team": "Fuquay Varina Bengals",

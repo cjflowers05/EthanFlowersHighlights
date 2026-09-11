@@ -248,7 +248,11 @@ def scan():
             pass
 
     manifest = {
-        "player": {"name": config.get("name", "Ethan Flowers"), "tabs": config.get("tabs", [])},
+        "player": {
+            "name": config.get("name", "Ethan Flowers"),
+            "tabs": config.get("tabs", []),
+            "bio": config.get("bio", {})
+        },
         "generated_at": datetime.now().isoformat(),
         "seasons": []
     }
