@@ -285,6 +285,22 @@ def scan():
                         if manual:
                             game['date'] = manual
                     season["games"].append(game)
+                else:
+                    # Folder exists but no footage yet — add as placeholder tile
+                    game_info = parse_game_folder(game_dir.name)
+                    num = game_info.get('number')
+                    manual = team_dates.get(str(num)) if num else None
+                    season['games'].append({
+                        **game_info,
+                        "folder": game_dir.name,
+                        "relative_path": str(game_dir.relative_to(BASE_DIR)).replace('\\', '/'),
+                        "date": manual,
+                        "clips": [],
+                        "player_highlights": [],
+                        "full_game_files": [],
+                        "compiled_reel": None,
+                        "placeholder": True
+                    })
 
             # Add placeholder tiles for all missing game numbers:
             # 1. Any number in game_dates.json (known schedule)
