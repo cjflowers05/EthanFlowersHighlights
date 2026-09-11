@@ -227,6 +227,13 @@ a { color: inherit; text-decoration: none; }
 .gallery-section {
   padding: 16px 40px;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.gallery-main {
+  flex: 1;
+  min-width: 0;
 }
 .gallery-label {
   font-family: 'Barlow Condensed', sans-serif;
@@ -262,6 +269,46 @@ a { color: inherit; text-decoration: none; }
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: center 20%;
+}
+.gallery-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.gallery-contact-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--txt-2);
+  margin-bottom: 0;
+}
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform .12s, opacity .12s;
+  border: none;
+  cursor: pointer;
+}
+.contact-btn:hover { transform: translateY(-2px); opacity: .9; }
+.contact-btn.email { background: var(--accent); color: #111; }
+.contact-btn.phone { background: var(--bg-card); color: var(--txt); border: 1px solid var(--border-accent); }
+@media (max-width: 768px) {
+  .gallery-section { flex-direction: column; align-items: flex-start; }
+  .gallery-contact { flex-direction: row; }
 }
 
 /* ── Nav/Tabs ──────────────────────────────────────────────── */
@@ -1173,14 +1220,21 @@ video {
   </div>
 </header>
 
-<!-- Photo gallery -->
+<!-- Photo gallery + contact -->
 <section class="gallery-section">
-  <div class="gallery-label">Photos</div>
-  <div class="gallery-strip">
-    <div class="gallery-item"><img src="StillPhotos/ActiveDefense2.jpg" alt="Active Defense"></div>
-    <div class="gallery-item"><img src="StillPhotos/Mid-Game.jpg" alt="Mid Game"></div>
-    <div class="gallery-item"><img src="StillPhotos/ActiveDefense1.jpg" alt="Active Defense"></div>
-    <div class="gallery-item"><img src="StillPhotos/EthanHeadshot.jpg" alt="Headshot"></div>
+  <div class="gallery-main">
+    <div class="gallery-label">Photos</div>
+    <div class="gallery-strip">
+      <div class="gallery-item"><img src="StillPhotos/ActiveDefense2.jpg" alt="Active Defense"></div>
+      <div class="gallery-item"><img src="StillPhotos/Mid-Game.jpg" alt="Mid Game"></div>
+      <div class="gallery-item"><img src="StillPhotos/ActiveDefense1.jpg" alt="Active Defense"></div>
+      <div class="gallery-item"><img src="StillPhotos/EthanHeadshot.jpg" alt="Headshot"></div>
+    </div>
+  </div>
+  <div class="gallery-contact">
+    <div class="gallery-contact-label">Contact</div>
+    <a class="contact-btn email" href="mailto:ethandflowers13@gmail.com">✉ Email Ethan</a>
+    <a class="contact-btn phone" href="tel:9282320379">📱 928-232-0379</a>
   </div>
 </section>
 
@@ -1390,12 +1444,7 @@ function renderBio() {
   const accolades = bio.accolades || [];
   const parents = contact.parents || [];
 
-  const phoneRaw = (contact.player_phone || '').replace(/\D/g, '');
   panel.innerHTML = `
-    <div class="bio-cta-row">
-      <a class="bio-cta-btn email" href="mailto:${contact.player_email || ''}">✉ Email Ethan</a>
-      ${contact.player_phone ? `<a class="bio-cta-btn phone" href="tel:${phoneRaw}">📱 ${contact.player_phone}</a>` : ''}
-    </div>
     <div class="bio-grid">
       <div class="bio-card">
         <div class="bio-card-title">Player Info</div>
