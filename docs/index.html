@@ -1089,25 +1089,28 @@ video {
   margin: 4px 4px 4px 0;
 }
 .nav-bio-btn {
-  padding: 14px 20px 12px;
+  padding: 7px 18px;
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: .06em;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--txt-2);
-  background: none;
+  color: #111;
+  background: var(--accent);
   border: none;
-  border-bottom: 2px solid transparent;
+  border-radius: 100px;
   white-space: nowrap;
   cursor: pointer;
   margin-left: auto;
-  transition: color .15s, border-color .15s;
+  align-self: center;
+  margin-right: 4px;
+  transition: background .15s, transform .1s;
+  flex-shrink: 0;
 }
-.nav-bio-btn:hover { color: var(--txt); }
+.nav-bio-btn:hover { background: var(--accent-dim); transform: scale(1.04); }
 .nav-bio-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 @media (max-width: 768px) {
   .bio-grid { grid-template-columns: 1fr; }
@@ -1278,10 +1281,11 @@ window.__STATIC_MANIFEST__ = {
       },
       "accolades": [
         "All American"
-      ]
+      ],
+      "aspirations": "Looking to compete at the collegiate level as a defender. Seeking a program that values technical development and high-level competition where I can contribute immediately and grow as a player."
     }
   },
-  "generated_at": "2026-09-11T12:25:53.566290",
+  "generated_at": "2026-09-11T12:37:40.596813",
   "seasons": [
     {
       "name": "Fuquay Varina Bengals \u2014 2026 Season",
@@ -2551,7 +2555,7 @@ window.__STATIC_MANIFEST__ = {
     }
   ],
   "static_export": true,
-  "exported_at": "2026-09-11T12:26:33.773832"
+  "exported_at": "2026-09-11T12:37:41.810785"
 };
 </script>
 <script>
@@ -2734,6 +2738,11 @@ function renderBio() {
         <div style="padding-top:6px;">
           ${accolades.map(a => `<span class="bio-accolade">★ ${a}</span>`).join('')}
         </div>
+      </div>` : ''}
+      ${bio.aspirations ? `
+      <div class="bio-card full-width">
+        <div class="bio-card-title">Aspirations</div>
+        <p style="font-size:15px;line-height:1.65;color:var(--txt);margin-top:6px;">${bio.aspirations}</p>
       </div>` : ''}
     </div>`;
 }
