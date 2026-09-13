@@ -67,12 +67,13 @@
         ]
       },
       "accolades": [
-        "All American"
+        "Academic All Conference",
+        "Athletics All Conference"
       ],
       "aspirations": "Looking to compete at the collegiate level as a defender. Seeking a program that values technical development and high-level competition where I can contribute immediately and grow as a player."
     }
   },
-  "generated_at": "2026-09-11T12:37:40.596813",
+  "generated_at": "2026-09-12T21:23:43.984105",
   "seasons": [
     {
       "name": "Fuquay Varina Bengals \u2014 2026 Season",
@@ -664,10 +665,21 @@
           "relative_path": "Carolina Velocity FC/2026 Season/CVFC vs LCU G1",
           "date": null,
           "clips": [],
-          "player_highlights": [],
+          "player_highlights": [
+            {
+              "file": "Carolina Velocity FC/2026 Season/CVFC vs LCU G1/CVFC vs LCU G1 (Ethan#3).mp4",
+              "filename": "CVFC vs LCU G1 (Ethan#3).mp4",
+              "size_mb": 41.42,
+              "duration": 59.8,
+              "thumbnail": "output/thumbnails/thumb_ph_CVFC_vs_LCU_G1__Ethan_3_.jpg",
+              "type": "player_cut",
+              "half": null,
+              "label": "CVFC vs LCU G1 (Ethan#3)",
+              "jersey": 3
+            }
+          ],
           "full_game_files": [],
-          "compiled_reel": null,
-          "placeholder": true
+          "compiled_reel": null
         },
         {
           "number": null,
@@ -817,10 +829,21 @@
           "relative_path": "Fuquay Varina Bengals/2025 Season/6. Fuquay-Varina vs Athens Drive",
           "date": null,
           "clips": [],
-          "player_highlights": [],
+          "player_highlights": [
+            {
+              "file": "Fuquay Varina Bengals/2025 Season/6. Fuquay-Varina vs Athens Drive/FVHS vs ADHS (Ethan#19).mp4",
+              "filename": "FVHS vs ADHS (Ethan#19).mp4",
+              "size_mb": 87.28,
+              "duration": 123.1,
+              "thumbnail": "output/thumbnails/thumb_ph_FVHS_vs_ADHS__Ethan_19_.jpg",
+              "type": "player_cut",
+              "half": null,
+              "label": "FVHS vs ADHS (Ethan#19)",
+              "jersey": 19
+            }
+          ],
           "full_game_files": [],
-          "compiled_reel": null,
-          "placeholder": true
+          "compiled_reel": null
         },
         {
           "number": 7,
